@@ -60,7 +60,7 @@ public class User {
         this.email = email;
         this.userName = userName;
         this.password = password;
-        this.savingGoals = savingGoals;
+//        this.savingGoals = savingGoals;
     }
 
     public int getId() {
