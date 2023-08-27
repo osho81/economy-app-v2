@@ -18,11 +18,10 @@ import java.util.List;
 
 // Update mockdata, to complete (missing fields in) data.sql
 
-// Disabled/commented out om 230827; do all fields in data.sql instead
+// Disabled/commented out om 230827; all fields in data.sql instead
 
-@Configuration
-public class MockdataConfig {
-
+//@Configuration
+//public class MockdataConfig {
 //    @Bean
 //    CommandLineRunner commandLineRunner(UserRepository userRepository, UserService userService,
 //                                        SavingsGoalRepository savingsGoalRepository, SavingsGoalService savingsGoalService) {
@@ -55,5 +54,4 @@ public class MockdataConfig {
 //
 //        };
 //    }
-
-}
+//}
