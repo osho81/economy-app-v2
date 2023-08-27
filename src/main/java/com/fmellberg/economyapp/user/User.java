@@ -12,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(AuditingEntityListener.class) // Needed for e.g.  @CreatedDate/ @LastModifiedDate
 public class User {
 
     @Id
