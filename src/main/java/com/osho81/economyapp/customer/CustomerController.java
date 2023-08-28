@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/customers")
-@CrossOrigin(origins = "http://localhost:5173") // Allow VUE frontend
+//@CrossOrigin(origins = "http://localhost:5173") // Allow VUE frontend
 public class CustomerController {
 
     private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
@@ -24,7 +24,7 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
         System.out.println("hiii");
         logger.info("Received a request to create a customer: {}", customerDTO);
