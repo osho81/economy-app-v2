@@ -1,4 +1,4 @@
-INSERT INTO customers (first_name, last_name, email, customername, password, created_at, last_modified)
+INSERT INTO customers (first_name, last_name, email, customer_name, password, created_at, last_modified)
 VALUES
     ('John', 'Doe', 'john@example.com', 'johndoe', 'password1', '2022-12-01 11:11:11', '2022-12-01 11:11:11'),
     ('Jane', 'Smith', 'jane@example.com', 'janesmith', 'password2', '2022-12-01 11:11:11', '2022-12-01 11:11:11'),
@@ -6,7 +6,7 @@ VALUES
     ('Emily', 'Davis', 'emily@example.com', 'emilyd', 'password4', '2022-12-01 11:11:11', '2022-12-01 11:11:11'),
     ('David', 'Wilson', 'david@example.com', 'davidw', 'password5', '2022-12-01 11:11:11', '2022-12-01 11:11:11');
 
-# INSERT INTO customers (first_name, last_name, email, customername, password)
+# INSERT INTO customers (first_name, last_name, email, customer_name, password)
 # VALUES
 #     ('John', 'Doe', 'john@example.com', 'johndoe', 'password1'),
 #     ('Jane', 'Smith', 'jane@example.com', 'janesmith', 'password2'),
