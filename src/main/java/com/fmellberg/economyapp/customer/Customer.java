@@ -1,4 +1,4 @@
-package com.fmellberg.economyapp.user;
+package com.fmellberg.economyapp.customer;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fmellberg.economyapp.savingsgoal.SavingsGoal;
@@ -11,9 +11,9 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "customers")
 @EntityListeners(AuditingEntityListener.class) // Needed for e.g.  @CreatedDate/ @LastModifiedDate
-public class User {
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,15 +25,15 @@ public class User {
     private String lastName;
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-    @Column(name = "username", nullable = false, unique = true)
-    private String userName;
+    @Column(name = "customername", nullable = false, unique = true)
+    private String customerName;
     @Column(name = "password", nullable = false)
     private String password;
 
-    // One uUser can have many savings-goal
-    // If user deleted, related savings-goal are deleted too
+    // One Customer can have many savings-goal
+    // If customer deleted, related savings-goal are deleted too
     @JsonManagedReference // Avoid infinite recursion
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SavingsGoal> savingGoals;
     @CreatedDate // Works on post method creations
     @Column(name = "created_at")
@@ -42,23 +42,23 @@ public class User {
     @Column(name = "last_modified")
     private Timestamp lastModified;
 
-    public User() {
+    public Customer() {
     }
 
-    public User(int id, String firstName, String lastName, String email, String userName, String password) {
+    public Customer(int id, String firstName, String lastName, String email, String customerName, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.userName = userName;
+        this.customerName = customerName;
         this.password = password;
     }
 
-    public User(String firstName, String lastName, String email, String userName, String password) {
+    public Customer(String firstName, String lastName, String email, String customerName, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.userName = userName;
+        this.customerName = customerName;
         this.password = password;
 //        this.savingGoals = savingGoals;
     }
@@ -95,12 +95,12 @@ public class User {
         this.email = email;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public String getPassword() {
@@ -137,12 +137,12 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "Customer{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", userName='" + userName + '\'' +
+                ", customerName='" + customerName + '\'' +
                 ", password='" + password + '\'' +
                 ", savingGoals=" + savingGoals +
                 ", createdAt=" + createdAt +

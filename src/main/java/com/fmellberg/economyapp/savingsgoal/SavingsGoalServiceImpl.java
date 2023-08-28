@@ -1,8 +1,8 @@
 package com.fmellberg.economyapp.savingsgoal;
 
+import com.fmellberg.economyapp.customer.CustomerRepository;
 import com.fmellberg.economyapp.exception.ResourceNotFoundException;
-import com.fmellberg.economyapp.user.User;
-import com.fmellberg.economyapp.user.UserRepository;
+import com.fmellberg.economyapp.customer.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,27 +17,27 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
 
     private static final Logger logger = LoggerFactory.getLogger(SavingsGoalServiceImpl.class);
     private final SavingsGoalRepository savingsGoalRepository;
-    private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    public SavingsGoalServiceImpl(SavingsGoalRepository savingsGoalRepository, UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public SavingsGoalServiceImpl(SavingsGoalRepository savingsGoalRepository, CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
         this.savingsGoalRepository = savingsGoalRepository;
     }
 
     public SavingsGoalDTO createSavingsGoal(SavingsGoalDTO savingsGoalDTO) {
-        Optional<User> user = userRepository.findById(savingsGoalDTO.getUserId());
-        if (user.isPresent()) {
-            User existingUser = user.get();
+        Optional<Customer> customer = customerRepository.findById(savingsGoalDTO.getCustomerId());
+        if (customer.isPresent()) {
+            Customer existingCustomer = customer.get();
 
-            SavingsGoal savingsGoal = SavingsGoalMapper.toEntity(savingsGoalDTO, existingUser);
+            SavingsGoal savingsGoal = SavingsGoalMapper.toEntity(savingsGoalDTO, existingCustomer);
             logger.debug("Creating Savings goal: {}", savingsGoal);
             SavingsGoal createdSavingsGoal = savingsGoalRepository.save(savingsGoal);
             logger.info("Savings goal created: {}", createdSavingsGoal);
             return SavingsGoalMapper.toDTO(createdSavingsGoal);
         } else {
-            logger.error("User not found for creating savings goal");
-            throw new ResourceNotFoundException("User", "id", savingsGoalDTO.getUserId());
+            logger.error("Customer not found for creating savings goal");
+            throw new ResourceNotFoundException("Customer", "id", savingsGoalDTO.getCustomerId());
         }
     }
 

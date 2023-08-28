@@ -1,4 +1,4 @@
-package com.fmellberg.economyapp.user.DTO;
+package com.fmellberg.economyapp.customer.DTO;
 
 import com.fmellberg.economyapp.savingsgoal.SavingsGoal;
 
@@ -7,46 +7,46 @@ import java.util.List;
 import java.util.Objects;
 
 // Data transfer object
-// Fields in User, but not here in UserDTO: creates/modified date, saving goals list
-public class UserDTO {
+// Fields in Customer, but not here in CustomerDTO: creates/modified date, saving goals list
+public class CustomerDTO {
 
     private int id;
     private String firstName;
     private String lastName;
     private String email;
-    private String userName;
+    private String customerName;
     private String password;
 
     // Add savingsGoals (manyToOne) 230708
     private List<SavingsGoal> savingGoals;
 
-    public UserDTO() {
+    public CustomerDTO() {
     }
 
-    public UserDTO(int id, String firstName, String lastName, String email, String userName, String password) {
+    public CustomerDTO(int id, String firstName, String lastName, String email, String customerName, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.userName = userName;
+        this.customerName = customerName;
         this.password = password;
     }
 
-    public UserDTO(String firstName, String lastName, String email, String userName, String password) {
+    public CustomerDTO(String firstName, String lastName, String email, String customerName, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.userName = userName;
+        this.customerName = customerName;
         this.password = password;
     }
 
     // Add savingsGoals to constructor 230708
-    public UserDTO(int id, String firstName, String lastName, String email, String userName, String password, ArrayList<SavingsGoal> savingGoals) {
+    public CustomerDTO(int id, String firstName, String lastName, String email, String customerName, String password, ArrayList<SavingsGoal> savingGoals) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.userName = userName;
+        this.customerName = customerName;
         this.password = password;
 
         // Add savingsGoals (manyToOne) 230708
@@ -85,12 +85,12 @@ public class UserDTO {
         this.email = email;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public String getPassword() {
@@ -111,12 +111,12 @@ public class UserDTO {
 
     @Override
     public String toString() {
-        return "UserDTO{" +
+        return "CustomerDTO{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", userName='" + userName + '\'' +
+                ", customerName='" + customerName + '\'' +
                 '}';
     }
 
@@ -124,12 +124,12 @@ public class UserDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserDTO userDTO = (UserDTO) o;
-        return id == userDTO.id && firstName.equals(userDTO.firstName) && lastName.equals(userDTO.lastName) && email.equals(userDTO.email) && userName.equals(userDTO.userName) && password.equals(userDTO.password);
+        CustomerDTO customerDTO = (CustomerDTO) o;
+        return id == customerDTO.id && firstName.equals(customerDTO.firstName) && lastName.equals(customerDTO.lastName) && email.equals(customerDTO.email) && customerName.equals(customerDTO.customerName) && password.equals(customerDTO.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, userName, password);
+        return Objects.hash(id, firstName, lastName, email, customerName, password);
     }
 }

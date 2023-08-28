@@ -1,7 +1,7 @@
 package com.fmellberg.economyapp.savingsgoal;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fmellberg.economyapp.user.User;
+import com.fmellberg.economyapp.customer.Customer;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -9,7 +9,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "savings_goals")
@@ -36,9 +35,9 @@ public class SavingsGoal {
     private LocalDate endDate;
 
     @JsonBackReference // Avoid infinite recursion
-    @ManyToOne // Many (different) savings-goal can have one user (each)
-    @JoinColumn(name = "userid", nullable = false)
-    private User user;
+    @ManyToOne // Many (different) savings-goal can have one customer (each)
+    @JoinColumn(name = "customerid", nullable = false)
+    private Customer customer;
 
     @CreatedDate
     @Column(name = "createdat")
@@ -99,12 +98,12 @@ public class SavingsGoal {
         this.endDate = endDate;
     }
 
-    public User getUser() {
-        return user;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Timestamp getCreatedAt() {
@@ -132,7 +131,7 @@ public class SavingsGoal {
                 ", targetAmountOfCash=" + targetAmountOfCash +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-//                ", user=" + user + // Not working on mock data (missing fields)
+//                ", customer=" + customer + // Not working on mock data (missing fields)
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + lastModified +
                 '}';

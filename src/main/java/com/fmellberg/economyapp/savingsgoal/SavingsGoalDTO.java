@@ -1,10 +1,6 @@
 package com.fmellberg.economyapp.savingsgoal;
 
-import com.fmellberg.economyapp.user.User;
-import jakarta.persistence.*;
-
 import java.time.LocalDate;
-import java.util.Date;
 
 public class SavingsGoalDTO {
 
@@ -14,19 +10,19 @@ public class SavingsGoalDTO {
     private double targetAmountOfCash;
     private LocalDate startDate;
     private LocalDate endDate;
-    private int userId;
+    private int customerId;
 
     public SavingsGoalDTO() {
     }
 
-    public SavingsGoalDTO(int id, String goalName, double currentAmountOfCash, double targetAmountOfCash, LocalDate startDate, LocalDate endDate, int userId) {
+    public SavingsGoalDTO(int id, String goalName, double currentAmountOfCash, double targetAmountOfCash, LocalDate startDate, LocalDate endDate, int customerId) {
         this.id = id;
         this.goalName = goalName;
         this.currentAmountOfCash = currentAmountOfCash;
         this.targetAmountOfCash = targetAmountOfCash;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.userId = userId;
+        this.customerId = customerId;
     }
 
     public int getId() {
@@ -77,12 +73,12 @@ public class SavingsGoalDTO {
         this.endDate = endDate;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     @Override
@@ -94,7 +90,7 @@ public class SavingsGoalDTO {
                 ", targetAmountOfCash=" + targetAmountOfCash +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", userId=" + userId +
+                ", customerId=" + customerId +
                 '}';
     }
 }

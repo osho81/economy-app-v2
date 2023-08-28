@@ -1,9 +1,6 @@
 package com.fmellberg.economyapp.savingsgoal;
 
-import com.fmellberg.economyapp.user.User;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.fmellberg.economyapp.customer.Customer;
 
 public class SavingsGoalMapper {
 
@@ -15,11 +12,11 @@ public class SavingsGoalMapper {
         dto.setTargetAmountOfCash(savingsGoal.getTargetAmountOfCash());
         dto.setStartDate(savingsGoal.getStartDate());
         dto.setEndDate(savingsGoal.getEndDate());
-        dto.setUserId(savingsGoal.getUser().getId());
+        dto.setCustomerId(savingsGoal.getCustomer().getId());
         return dto;
     }
 
-    public static SavingsGoal toEntity(SavingsGoalDTO dto, User user) {
+    public static SavingsGoal toEntity(SavingsGoalDTO dto, Customer customer) {
         SavingsGoal savingsGoal = new SavingsGoal();
         savingsGoal.setId(dto.getId());
         savingsGoal.setGoalName(dto.getGoalName());
@@ -27,7 +24,7 @@ public class SavingsGoalMapper {
         savingsGoal.setTargetAmountOfCash(dto.getTargetAmountOfCash());
         savingsGoal.setStartDate(dto.getStartDate());
         savingsGoal.setEndDate(dto.getEndDate());
-        savingsGoal.setUser(user);
+        savingsGoal.setCustomer(customer);
         return savingsGoal;
     }
 }
