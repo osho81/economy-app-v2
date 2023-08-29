@@ -26,7 +26,10 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
     }
 
     public SavingsGoalDTO createSavingsGoal(SavingsGoalDTO savingsGoalDTO) {
+        // Check if customer (customer id in savings goal arg) exists
         Optional<Customer> customer = customerRepository.findById(savingsGoalDTO.getCustomerId());
+
+        // if customer exists, create the passed in savings goal
         if (customer.isPresent()) {
             Customer existingCustomer = customer.get();
 
@@ -36,6 +39,7 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
             logger.info("Savings goal created: {}", createdSavingsGoal);
             return SavingsGoalMapper.toDTO(createdSavingsGoal);
         } else {
+            // If customer (customer id in savings goal arg) doesn't exist:
             logger.error("Customer not found for creating savings goal");
             throw new ResourceNotFoundException("Customer", "id", savingsGoalDTO.getCustomerId());
         }
@@ -77,6 +81,8 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
             existingSavingsGoal.setTargetAmountOfCash(savingsGoalDTO.getTargetAmountOfCash());
             existingSavingsGoal.setStartDate(savingsGoalDTO.getStartDate());
             existingSavingsGoal.setEndDate(savingsGoalDTO.getEndDate());
+
+            // Should not be able to change/update customer id for the savings goal
 
             logger.debug("Updating Savings goal: {}", existingSavingsGoal);
             SavingsGoal updatedSavingsGoal = savingsGoalRepository.save(existingSavingsGoal);
