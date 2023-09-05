@@ -51,12 +51,12 @@ public class User implements UserDetails {
     }
     @Override
     public String getUsername() {
-        return email;
+        return email; // Return value from entity field
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return true; // Note the negation
     }
 
     @Override
