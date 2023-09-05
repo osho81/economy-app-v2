@@ -39,33 +39,39 @@ public class User implements UserDetails {
 
     @Override // Should return a list of roles
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Return name of the (role) enum
+        // Return object with the (role) enum
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
+
+    ///----- Implement methods from UserDetail (Interface)-----///
+    @Override
+    public String getPassword() {
+        return password; // Return value from entity field
+    }
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
 
