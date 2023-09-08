@@ -1,6 +1,6 @@
 package com.osho81.economyapp.user;
 
-// This is the App-User,
+// This is the App-User (compare normal user or customer),
 // i.e. the user that will or will not get authenticated
 
 // This class uses lombok, to save time
