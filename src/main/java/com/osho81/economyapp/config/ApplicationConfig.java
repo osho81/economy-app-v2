@@ -4,7 +4,6 @@ import com.osho81.economyapp.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -19,7 +18,7 @@ public class ApplicationConfig {
 
         // Use customized crud method in user repo
         return username -> userRepository.findByEmail(username)
-                // Retrns optional; so handle exception:
+                // Returns optional; so handle exception:
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

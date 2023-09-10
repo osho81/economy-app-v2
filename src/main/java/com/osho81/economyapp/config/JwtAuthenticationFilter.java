@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -45,6 +46,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 && SecurityContextHolder.getContext().getAuthentication() == null) {
             // Use detailService interface method to load userDetails object
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+
+            // Pass in extracted jwt, check validity
+            // Also pass in userDetails
+            if (jwtService.isTokenValid(jwt, userDetails)) {
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                )
+            }
         }
 
     }
