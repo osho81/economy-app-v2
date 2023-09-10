@@ -2,6 +2,7 @@ package com.osho81.economyapp.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,6 +45,9 @@ public class JwtService {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 // Set expiration in 24 hours or any other desired duration
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                // Set which keys to sign this procedure step with:
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     // Extract jwt claims
