@@ -56,16 +56,18 @@ public class JwtService {
     // Validation of token
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token); // Call the main method above
-        // If userName is same as userName in userDetails, and not expired...
-        return (username.equals((userDetails.getUsername())) && !isTokenExpired(token))
+        // If userName is same as userName in userDetails, and not expired -> return true
+        return (username.equals((userDetails.getUsername())) && !isTokenExpired(token));
     }
 
     // Check if token has expired
     private boolean isTokenExpired(String token) {
+        // Gets extracted token expiration date/time for the token
+        // Checks if that date/time is before current date/time
         return extractExpiration(token).before(new Date());
     }
     private Date extractExpiration(String token) {
-        // Returns a date to isTokenExpired, using extractClaim()
+        // Returns a date/time to isTokenExpired, using extractClaim()
         return extractClaim(token, Claims::getExpiration);
     }
 
