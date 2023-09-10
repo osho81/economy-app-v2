@@ -39,11 +39,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Extract userEmail from jwt, using special JwtService class for this:
         userEmail = jwtService.extractUsername(jwt);
 
-        // Check if user detail is null,
-        // AND is not already authenticated; this is checked by getAuth...
+        // Make sure extracted userEmail is not null,
+        // AND is not already authenticated; check this by getAuth...
         if (userEmail != null
                 && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUserename(userEmail)
+            // Use detailService interface method to load userDetails object
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
         }
 
     }
