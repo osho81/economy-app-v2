@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.client.RestTemplate;
 
+// Not part of security implementation
+
 @Configuration
 @EnableJpaAuditing
 public class Config {

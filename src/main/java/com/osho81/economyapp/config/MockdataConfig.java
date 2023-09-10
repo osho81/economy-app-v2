@@ -1,5 +1,7 @@
 package com.osho81.economyapp.config;
 
+// Not part of security implementation
+
 // Modify/complete the mock data that are created by data.sql
 
 // Update mockdata, to complete (missing fields in) data.sql
