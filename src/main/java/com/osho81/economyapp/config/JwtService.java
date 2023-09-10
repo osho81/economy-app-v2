@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -35,9 +36,17 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
+    // Use this if only generate userDetails (overloaded)
+    public String generateToken(UserDetails userDetails) {
+        // Use the other generateToken method; pass in an empty map
+        return generateToken(new HashMap<>(), userDetails);
+    }
+
+    // use this if also have extra claims (overloaded)
     public String generateToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails) {
+            UserDetails userDetails
+    ) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -47,8 +56,14 @@ public class JwtService {
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 // Set which keys to sign this procedure step with:
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                .compact();
+                .compact(); // Generates and returns the token
     }
+
+    // Validation of token
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+
+    }
+
 
     // Extract jwt claims
     private Claims extractAllClaims(String token) {
@@ -67,7 +82,6 @@ public class JwtService {
     }
 
     ////---- Additional methods to check different issues with the token ----////
-
 
 
 }
