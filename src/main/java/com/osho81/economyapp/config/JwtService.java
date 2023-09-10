@@ -30,12 +30,6 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // Generic method
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
     // Use this if only generate userDetails (overloaded)
     public String generateToken(UserDetails userDetails) {
         // Use the other generateToken method; pass in an empty map
@@ -61,11 +55,27 @@ public class JwtService {
 
     // Validation of token
     public boolean isTokenValid(String token, UserDetails userDetails) {
-
+        final String username = extractUsername(token); // Call the main method above
+        // If userName is same as userName in userDetails, and not expired...
+        return (username.equals((userDetails.getUsername())) && !isTokenExpired(token))
     }
 
+    // Check if token has expired
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+    private Date extractExpiration(String token) {
+        // Returns a date to isTokenExpired, using extractClaim()
+        return extractClaim(token, Claims::getExpiration);
+    }
 
-    // Extract jwt claims
+    // Generic method, for extracting claim
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token); // Use extractAllClaims()
+        return claimsResolver.apply(claims);
+    }
+
+    // Extract ALL jwt claims
     private Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
@@ -80,8 +90,6 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
-    ////---- Additional methods to check different issues with the token ----////
 
 
 }
