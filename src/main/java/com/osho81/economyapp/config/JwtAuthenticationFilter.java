@@ -6,6 +6,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -16,7 +19,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService; // Class used to extract email from jwt
-
+    private final UserDetailsService userDetailsService; // spring sec interface
 
     @Override
     protected void doFilterInternal(
@@ -33,8 +36,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         // Extract token
         jwt = authHeader.substring(7); // Exclude "Bearer "
-        // Extract useremail from jwt, using special JwtService class for this:
+        // Extract userEmail from jwt, using special JwtService class for this:
         userEmail = jwtService.extractUsername(jwt);
+
+        // Check if user detail is null,
+        // AND is not already authenticated; this is checked by getAuth...
+        if (userEmail != null
+                && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailsService.loadUserByUserename(userEmail)
+        }
 
     }
 }
