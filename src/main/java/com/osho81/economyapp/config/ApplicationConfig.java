@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+
+// Find User, with method that returns user
+
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
