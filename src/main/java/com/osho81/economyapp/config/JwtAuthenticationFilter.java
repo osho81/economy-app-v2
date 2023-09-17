@@ -41,16 +41,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Extract userEmail from jwt, using special JwtService class for this:
         userEmail = jwtService.extractUsername(jwt);
 
-        // Make sure extracted userEmail is not null,
-        // AND is not already authenticated; check this by getAuth...
+        // If extracted userEmail is not null,
+        // AND is not already authenticated (check this by getAuth)...
         if (userEmail != null
                 && SecurityContextHolder.getContext().getAuthentication() == null) {
+            // ... get user from database
             // Use detailService interface method to load userDetails object
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-            // Check token validity with jwtService.isTokenValid, that takes jwt & userDetails args
+            // Check user/token validity with jwtService.isTokenValid, that takes jwt & userDetails args
             if (jwtService.isTokenValid(jwt, userDetails)) {
-                // If token is valid:
+                // If valid, do the following steps to build & pass token:
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null, // No creds used by 230910
@@ -64,6 +65,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // Update security context holder; pass in the built token
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
+
+            // Hand over to next filter step
+            filterChain.doFilter(request, response);
         }
 
     }
