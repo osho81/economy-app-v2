@@ -39,7 +39,8 @@ public class SecurityConfiguration {
                 // Create a white list:
                 // .authorizeHttpRequests() // Deprecated style
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("urls")
+                        // Base endpoint for auth management: /api/v1/auth
+                        .requestMatchers("/api/v1/auth")
                         .permitAll()
 
                         // All else must be authenticated
