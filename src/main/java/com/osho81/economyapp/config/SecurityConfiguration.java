@@ -1,14 +1,18 @@
 package com.osho81.economyapp.config;
 
+import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-// Spring security v 3
+// SpringBoot 3, spring security 6 syntax
 
 // Responsible for all http security in the app
 
@@ -18,23 +22,36 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
 
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .authorizeHttpRequests()
+//                .cors(AbstractHttpConfigurer::disable)
+//                .csrf.disable() // Deprecated style
+                .csrf(AbstractHttpConfigurer::disable)
 
-                // Create a white list
-                .requestMatchers("urls")
-                .permitAll()
+//                .formLogin(AbstractHttpConfigurer::disable)
 
-                // All else must be authenticated
-                .anyRequest()
+//                .securityMatcher("/**") // Not making any difference
 
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                // Create a white list:
+                // .authorizeHttpRequests() // Deprecated style
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("urls")
+                        .permitAll()
 
+                        // All else must be authenticated
+                        .anyRequest()
+                )
+
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Deprecated style
+                        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
 
