@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,16 @@ public class JwtService {
 
     // Temporary secret key, generated online (256-bit, with hex);
     // https://seanwasere.com/generate-random-hex/
-    private static final String SECRET_KEY =
-            "669d677d375245f06cbbb53054c0094661c78d8b418d714876d774b2b505aa63";
+//    private static final String SECRET_KEY =
+//            "669d677d375245f06cbbb53054c0094661c78d8b418d714876d774b2b505aa63";
+
+
+    @Value("${application.security.jwt.secret-key}")
+    private String secretKey;
+    @Value("${application.security.jwt.expiration}")
+    private long jwtExpiration;
+    @Value("${application.security.jwt.refresh-token.expiration}")
+    private long refreshExpiration;
 
     // Extract username from token
     public String extractUsername(String token) {
@@ -36,21 +45,35 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    // use this if also have extra claims (overloaded)
+    // use this if have additional extra claims (overloaded)
     public String generateToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails
+    ) {
+        return buildToken(extraClaims, userDetails, jwtExpiration);
+    }
+
+    public String generateRefreshToken(
+            UserDetails userDetails
+    ) {
+        return buildToken(new HashMap<>(), userDetails, refreshExpiration);
+    }
+
+    private String buildToken(
+            Map<String, Object> extraClaims,
+            UserDetails userDetails,
+            long expiration
     ) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                // Set expiration in 24 hours or any other desired duration
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                // Set expiration duration
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 // Set which keys to sign this procedure step with:
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                .compact(); // Generates and returns the token
+                .compact();  // Generates and returns the token
     }
 
     // Validation of token
@@ -91,7 +114,8 @@ public class JwtService {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+//        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

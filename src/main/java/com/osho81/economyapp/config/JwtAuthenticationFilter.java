@@ -1,5 +1,6 @@
 package com.osho81.economyapp.config;
 
+import com.osho81.economyapp.token.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,8 +21,10 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+
     private final JwtService jwtService; // Class used to extract email from jwt
     private final UserDetailsService userDetailsService; // spring sec interface
+    private final TokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(
@@ -48,9 +51,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // ... get user from database
             // Use detailService interface method to load userDetails object
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+            var isTokenValid = tokenRepository.findByToken(jwt)
+                    .map(t -> !t.isExpired() && !t.isRevoked())
+                    .orElse(false);
 
             // Check user/token validity with jwtService.isTokenValid, that takes jwt & userDetails args
-            if (jwtService.isTokenValid(jwt, userDetails)) {
+            if (jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
                 // If valid, do the following steps to build & pass token:
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
