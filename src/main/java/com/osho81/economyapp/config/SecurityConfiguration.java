@@ -16,6 +16,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 // Responsible for all http security in the app
 
+
+import static com.osho81.economyapp.user.Permission.ADMIN_CREATE;
+import static com.osho81.economyapp.user.Permission.ADMIN_DELETE;
+import static com.osho81.economyapp.user.Permission.ADMIN_READ;
+import static com.osho81.economyapp.user.Permission.ADMIN_UPDATE;
+import static com.osho81.economyapp.user.Permission.MANAGER_CREATE;
+import static com.osho81.economyapp.user.Permission.MANAGER_DELETE;
+import static com.osho81.economyapp.user.Permission.MANAGER_READ;
+import static com.osho81.economyapp.user.Permission.MANAGER_UPDATE;
+import static com.osho81.economyapp.user.Role.ADMIN;
+import static com.osho81.economyapp.user.Role.MANAGER;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -43,8 +55,13 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/auth")
                         .permitAll()
 
+
+                        .requestMatchers("/api/v1/**").hasAnyRole(ADMIN.name(), MANAGER.name())
+
                         // All else must be authenticated
                         .anyRequest()
+                        .authenticated()
+
                 )
 
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Deprecated style

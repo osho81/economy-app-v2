@@ -29,3 +29,7 @@ VALUES
 #     ('Education Fund', 2000.00, 10000.00, '2023-06-01', '2024-12-31', 3),
 #     ('Car Purchase', 0.00, 20000.00, '2023-06-01', '2024-06-30', 4),
 #     ('Emergency Fund', 500.00, 5000.00, '2023-06-01', '2023-12-31', 5);
+
+INSERT INTO users (email, firstname, lastname, password, role)
+VALUES
+    ('hej@gmail.com', 'os', 'ho', 'osho', 'ADMIN');
